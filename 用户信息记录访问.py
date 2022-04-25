@@ -2,13 +2,13 @@
 
 #主界面
 def get_main_screen():
-    print('*'*20)
-    print('名片管理系统v1.0\n')
-    print('1.新建名片')
-    print('2.显示全部名片')
-    print('3.查询名片\n')
-    print('0.退出系统')
-    print('*'*20)
+    print('*'*26)
+    print(' '*5+'名片管理系统v1.2\n')
+    print(' '*5+'1.新建名片')
+    print(' '*5+'2.显示全部名片')
+    print(' '*5+'3.查询名片\n')
+    print(' '*5+'0.退出系统')
+    print('*'*26)
     
 #获取储存用户的数据，返回users_lib字典
 def load_users_lib():
@@ -89,7 +89,7 @@ def alter_user_info(user_info):
             new_user_info[key] = value
         else:
             new_user_info[key] = new_value
-    return user_info['姓名'],new_user_info
+    return new_user_info['姓名'],new_user_info
     
 #主程序
 while True:
@@ -124,41 +124,60 @@ while True:
             continue
         else: 
             list_users(users_lib)
+            while True:
+                ops_2 = input('0：返回上一个界面\n1：删除所有名片\n您希望的操作是：')
+                if ops_2 == '0':
+                    break
+                elif ops_2 == '1':
+                    while True:
+                        ops_1 = input('您确定要删除所有名片吗？\nyes：继续\nno：终止\n你希望的操作是：')
+                        if ops_1 == 'yes':
+                            users_lib = {}
+                            write_user_info(users_lib)
+                            print('已删除所有名片！')
+                            break
+                        elif ops_1 == 'no':
+                            break
+                        else:
+                            print('请输入"yes"或者"no"!')
+                    break
+                else:
+                    print('请从上述选项中选择！')
             print('\n')
         
     elif main_status == '3':  #查询名片
         check_status(main_status)
-        print('功能：查询名片')
-        inq_name = input('请输入要查找的姓名（输入0返回上一个界面）：')
-        if inq_name == '0':
-            print('\n')
-            continue
-        else:
-            if inq_name in users_lib.keys():
-                inq_user_info = {inq_name:users_lib[inq_name]}
-                list_users(inq_user_info)
-                while True:
-                    ops = input('可通过以下方式对名片进行操作：1：修改  2：删除  0:返回上级菜单\n您希望的操作是：')
-                    if ops == '1':
-                        new_name, new_info = alter_user_info(users_lib[inq_name])
-                        del users_lib[inq_name]
-                        users_lib[new_name] = new_info
-                        write_user_info(users_lib)
-                        print(inq_name+'的名片修改成功')
-                        break
-                    elif ops == '2':
-                        del users_lib[inq_name]
-                        write_user_info(users_lib)
-                        print('删除成功')
-                        break
-                    elif ops =='0':
-                        break
-                    else:
-                        print('请从上述选项中选择！')
-                        continue
-            
+        while True:
+            print('功能：查询名片')
+            inq_name = input('请输入要查找的姓名（输入0返回上一个界面）：')
+            if inq_name == '0':
+                print('\n')
+                break
             else:
-                print('该用户不存在！可使用“显示全部名片”功能确定用户姓名')
+                if inq_name in users_lib.keys():
+                    inq_user_info = {inq_name:users_lib[inq_name]}
+                    list_users(inq_user_info)
+                    while True:
+                        ops = input('可通过以下方式对名片进行操作：\n1：修改\n2：删除\n0:返回上一个界面\n您希望的操作是：')
+                        if ops == '1':
+                            new_name, new_info = alter_user_info(users_lib[inq_name])
+                            del users_lib[inq_name]
+                            users_lib[new_name] = new_info
+                            write_user_info(users_lib)
+                            print(inq_name+'的名片修改成功')
+                            break
+                        elif ops == '2':
+                            del users_lib[inq_name]
+                            write_user_info(users_lib)
+                            print('删除成功')
+                            break 
+                        elif ops =='0':
+                            break
+                        else:
+                            print('请从上述选项中选择！')
+                            continue
+                else:
+                    print('该用户不存在！可使用“显示全部名片”功能确定用户姓名')
             print('\n')
         
     else:
